@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Flutter reemplaza este placeholder al compilar con --base-href -->
+  <base href="/">
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0f9d58">
+
+  <title>RaffleFast</title>
+  <meta name="application-name" content="RaffleFast">
+  <meta name="apple-mobile-web-app-title" content="RaffleFast">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="RaffleFast — customer registration and live raffle management.">
+
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    html, body { height: 100%; margin: 0; background: #0b0d0f; }
+    .boot-hint { position: fixed; inset: 0; display: grid; place-items: center; color: #e6f4ea; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    .error-overlay { position: fixed; bottom: 0; left: 0; right: 0; max-height: 40vh; overflow: auto; background: #200; color:#fdd; font: 12px/1.4 monospace; padding: 8px; display:none; white-space: pre-wrap; z-index: 99999;}
+  </style>
+</head>
+<body>
+  <noscript>Please enable JavaScript to run RaffleFast.</noscript>
+  <div class="boot-hint" id="bootHint">Loading RaffleFast…</div>
+  <div id="err" class="error-overlay"></div>
+
+  <!-- Desregistra SW viejos (evita pantallas en blanco en móvil) -->
+  <script>
+    (function() {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(r){ r.unregister(); });
+        });
+      }
+    })();
+  </script>
+
+  <!-- Overlay de errores (útil en teléfonos sin consola) -->
+  <script>
+    (function(){
+      var $e = document.getElementById('err');
+      function show(msg) {
+        $e.style.display = 'block';
+        $e.textContent += (msg + '\n');
+      }
+      window.addEventListener('error', function(ev){
+        try { show('Error: ' + ev.message + ' @ ' + ev.filename + ':' + ev.lineno); } catch(e){}
+      });
+      window.addEventListener('unhandledrejection', function(ev){
+        try { show('Unhandled: ' + ev.reason); } catch(e){}
+      });
+      window.addEventListener('flutter-first-frame', function(){
+        var h = document.getElementById('bootHint');
+        if (h) h.remove();
+      }, { once: true });
+    })();
+  </script>
+
+  <!-- Bootstrap de Flutter (cache-bust con ?v=...) -->
+  <script src="flutter_bootstrap.js?v=20251007" async></script>
+</body>
+</html>
